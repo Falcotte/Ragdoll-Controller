@@ -37,6 +37,48 @@ namespace AngryKoala.Ragdoll
             return true;
         }
 
+        [MenuItem("GameObject/Ragdoll/Remove Ragdoll", false, 12)]
+        private static void RemoveRagdoll()
+        {
+            foreach(var selected in Selection.gameObjects)
+            {
+                Ragdoll ragdoll = selected.GetComponentInChildren<Ragdoll>();
+
+                foreach(var transform in ragdoll.GetComponentsInChildren<Transform>())
+                {
+                    if(transform != ragdoll.transform)
+                    {
+                        DestroyImmediate(transform.GetComponent<RagdollComponent>());
+
+                        DestroyImmediate(transform.GetComponent<CharacterJoint>());
+
+                        DestroyImmediate(transform.GetComponent<Rigidbody>());
+                        DestroyImmediate(transform.GetComponent<Collider>());
+                    }
+                }
+
+                DestroyImmediate(ragdoll);
+            }
+        }
+
+        [MenuItem("GameObject/Ragdoll/Remove Ragdoll", true)]
+        private static bool RemoveRagdollValidation()
+        {
+            if(Selection.gameObjects.Length == 0)
+            {
+                return false;
+            }
+
+            foreach(var selected in Selection.gameObjects)
+            {
+                if(selected == null || !selected.GetComponentInChildren<Ragdoll>())
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         private static bool CheckRig(Transform transform)
         {
             if(!transform.GetComponentInChildren<SkinnedMeshRenderer>())
