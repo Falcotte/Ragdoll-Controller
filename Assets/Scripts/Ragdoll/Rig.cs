@@ -7,7 +7,7 @@ namespace AngryKoala.Ragdoll
 {
     public class Rig
     {
-        public static List<string> MixamoRigParts = new List<string> { "mixamorig:Hips", "mixamorig:LeftUpLeg", "mixamorig:LeftLeg",
+        public static List<string> MixamoRigPartNames = new List<string> { "mixamorig:Hips", "mixamorig:LeftUpLeg", "mixamorig:LeftLeg",
             "mixamorig:RightUpLeg","mixamorig:RightLeg","mixamorig:LeftArm","mixamorig:LeftForeArm","mixamorig:RightArm","mixamorig:RightForeArm",
             "mixamorig:Spine1","mixamorig:Head" };
 
