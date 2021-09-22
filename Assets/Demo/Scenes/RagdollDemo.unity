@@ -219,6 +219,9 @@ MonoBehaviour:
   componentRigidbody: {fileID: 68648502}
   componentCollider: {fileID: 68648503}
   bodyPart: 3
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &79334537 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8486514574282715475, guid: bb00ef0e5430e2d4a9f99376562f3081, type: 3}
@@ -236,25 +239,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc891094dc5b4664f85deed9fa82d743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  componentRigidbody: {fileID: 0}
-  componentCollider: {fileID: 0}
+  componentRigidbody: {fileID: 79334540}
+  componentCollider: {fileID: 79334539}
   bodyPart: 0
---- !u!114 &79334539
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 79334537}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc891094dc5b4664f85deed9fa82d743, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  componentRigidbody: {fileID: 79334541}
-  componentCollider: {fileID: 79334540}
-  bodyPart: 0
---- !u!135 &79334540
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
+--- !u!135 &79334539
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -267,7 +258,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.0842042
   m_Center: {x: 0, y: 0.0842042, z: 0}
---- !u!54 &79334541
+--- !u!54 &79334540
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -283,7 +274,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!144 &79334542
+--- !u!144 &79334541
 CharacterJoint:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -474,6 +465,9 @@ MonoBehaviour:
   componentRigidbody: {fileID: 345648496}
   componentCollider: {fileID: 345648497}
   bodyPart: 1
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &431890522 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7564517051945661871, guid: 5ccf4e065d3d7374c8f1a3782b250df6, type: 3}
@@ -494,6 +488,9 @@ MonoBehaviour:
   componentRigidbody: {fileID: 431890525}
   componentCollider: {fileID: 431890524}
   bodyPart: 0
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!135 &431890524
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -664,6 +661,9 @@ MonoBehaviour:
   componentRigidbody: {fileID: 466674475}
   componentCollider: {fileID: 466674477}
   bodyPart: 1
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -850,24 +850,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc891094dc5b4664f85deed9fa82d743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  componentRigidbody: {fileID: 0}
-  componentCollider: {fileID: 0}
-  bodyPart: 0
---- !u!114 &815897874
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 815897869}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc891094dc5b4664f85deed9fa82d743, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   componentRigidbody: {fileID: 815897871}
   componentCollider: {fileID: 815897872}
   bodyPart: 2
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &832856631 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4138988857460925312, guid: 5ccf4e065d3d7374c8f1a3782b250df6, type: 3}
@@ -964,6 +952,9 @@ MonoBehaviour:
   componentRigidbody: {fileID: 832856633}
   componentCollider: {fileID: 832856634}
   bodyPart: 2
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &934282547 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5593524203697358469, guid: bb00ef0e5430e2d4a9f99376562f3081, type: 3}
@@ -983,16 +974,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ragdollComponents:
   - {fileID: 1939766846}
-  - {fileID: 1604646492}
-  - {fileID: 1788972613}
-  - {fileID: 1675565730}
-  - {fileID: 2056547665}
-  - {fileID: 1414867349}
-  - {fileID: 815897874}
-  - {fileID: 1218499276}
-  - {fileID: 2121136566}
-  - {fileID: 1736978377}
-  - {fileID: 79334539}
+  - {fileID: 1604646491}
+  - {fileID: 1788972612}
+  - {fileID: 1675565729}
+  - {fileID: 2056547664}
+  - {fileID: 1414867348}
+  - {fileID: 815897873}
+  - {fileID: 1218499275}
+  - {fileID: 2121136565}
+  - {fileID: 1736978376}
+  - {fileID: 79334538}
 --- !u!95 &934282549
 Animator:
   serializedVersion: 3
@@ -1205,6 +1196,9 @@ MonoBehaviour:
   componentRigidbody: {fileID: 1087771313}
   componentCollider: {fileID: 1087771315}
   bodyPart: 3
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &1189426210 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8494547439299887944, guid: 5ccf4e065d3d7374c8f1a3782b250df6, type: 3}
@@ -1301,6 +1295,9 @@ MonoBehaviour:
   componentRigidbody: {fileID: 1189426211}
   componentCollider: {fileID: 1189426213}
   bodyPart: 2
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &1218499271 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7043559706696083951, guid: bb00ef0e5430e2d4a9f99376562f3081, type: 3}
@@ -1394,24 +1391,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc891094dc5b4664f85deed9fa82d743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  componentRigidbody: {fileID: 0}
-  componentCollider: {fileID: 0}
-  bodyPart: 0
---- !u!114 &1218499276
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1218499271}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc891094dc5b4664f85deed9fa82d743, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   componentRigidbody: {fileID: 1218499272}
   componentCollider: {fileID: 1218499274}
   bodyPart: 2
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &1258681055 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8379727419169704244, guid: 5ccf4e065d3d7374c8f1a3782b250df6, type: 3}
@@ -1508,6 +1493,9 @@ MonoBehaviour:
   componentRigidbody: {fileID: 1258681057}
   componentCollider: {fileID: 1258681058}
   bodyPart: 2
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &1414867344 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5173950972103497652, guid: bb00ef0e5430e2d4a9f99376562f3081, type: 3}
@@ -1601,24 +1589,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc891094dc5b4664f85deed9fa82d743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  componentRigidbody: {fileID: 0}
-  componentCollider: {fileID: 0}
-  bodyPart: 0
---- !u!114 &1414867349
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1414867344}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc891094dc5b4664f85deed9fa82d743, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   componentRigidbody: {fileID: 1414867345}
   componentCollider: {fileID: 1414867347}
   bodyPart: 2
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &1604646487 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 97819481703381231, guid: bb00ef0e5430e2d4a9f99376562f3081, type: 3}
@@ -1712,24 +1688,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc891094dc5b4664f85deed9fa82d743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  componentRigidbody: {fileID: 0}
-  componentCollider: {fileID: 0}
-  bodyPart: 0
---- !u!114 &1604646492
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1604646487}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc891094dc5b4664f85deed9fa82d743, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   componentRigidbody: {fileID: 1604646488}
   componentCollider: {fileID: 1604646490}
   bodyPart: 3
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &1675565725 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3463612207173331604, guid: bb00ef0e5430e2d4a9f99376562f3081, type: 3}
@@ -1823,24 +1787,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc891094dc5b4664f85deed9fa82d743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  componentRigidbody: {fileID: 0}
-  componentCollider: {fileID: 0}
-  bodyPart: 0
---- !u!114 &1675565730
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1675565725}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc891094dc5b4664f85deed9fa82d743, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   componentRigidbody: {fileID: 1675565726}
   componentCollider: {fileID: 1675565728}
   bodyPart: 3
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &1736351326 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 251252030060448666, guid: 5ccf4e065d3d7374c8f1a3782b250df6, type: 3}
@@ -1995,24 +1947,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc891094dc5b4664f85deed9fa82d743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  componentRigidbody: {fileID: 0}
-  componentCollider: {fileID: 0}
-  bodyPart: 0
---- !u!114 &1736978377
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1736978372}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc891094dc5b4664f85deed9fa82d743, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   componentRigidbody: {fileID: 1736978373}
   componentCollider: {fileID: 1736978375}
   bodyPart: 1
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &1743440398 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2729252338452460747, guid: 5ccf4e065d3d7374c8f1a3782b250df6, type: 3}
@@ -2109,6 +2049,9 @@ MonoBehaviour:
   componentRigidbody: {fileID: 1743440400}
   componentCollider: {fileID: 1743440401}
   bodyPart: 3
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &1788972608 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8382547933653484164, guid: bb00ef0e5430e2d4a9f99376562f3081, type: 3}
@@ -2202,24 +2145,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc891094dc5b4664f85deed9fa82d743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  componentRigidbody: {fileID: 0}
-  componentCollider: {fileID: 0}
-  bodyPart: 0
---- !u!114 &1788972613
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1788972608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc891094dc5b4664f85deed9fa82d743, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   componentRigidbody: {fileID: 1788972610}
   componentCollider: {fileID: 1788972611}
   bodyPart: 3
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &1897155265 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 982606919997666445, guid: 5ccf4e065d3d7374c8f1a3782b250df6, type: 3}
@@ -2316,6 +2247,9 @@ MonoBehaviour:
   componentRigidbody: {fileID: 1897155266}
   componentCollider: {fileID: 1897155268}
   bodyPart: 2
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &1939766842 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1125354196043064985, guid: bb00ef0e5430e2d4a9f99376562f3081, type: 3}
@@ -2364,7 +2298,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   componentRigidbody: {fileID: 0}
   componentCollider: {fileID: 0}
-  bodyPart: 0
+  bodyPart: 1
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &1939766846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2380,6 +2317,9 @@ MonoBehaviour:
   componentRigidbody: {fileID: 1939766843}
   componentCollider: {fileID: 1939766844}
   bodyPart: 1
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &2056547660 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 782888279744930356, guid: bb00ef0e5430e2d4a9f99376562f3081, type: 3}
@@ -2473,24 +2413,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc891094dc5b4664f85deed9fa82d743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  componentRigidbody: {fileID: 0}
-  componentCollider: {fileID: 0}
-  bodyPart: 0
---- !u!114 &2056547665
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2056547660}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc891094dc5b4664f85deed9fa82d743, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   componentRigidbody: {fileID: 2056547662}
   componentCollider: {fileID: 2056547663}
   bodyPart: 3
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &2107897117 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2610062815842827494, guid: 5ccf4e065d3d7374c8f1a3782b250df6, type: 3}
@@ -2587,6 +2515,9 @@ MonoBehaviour:
   componentRigidbody: {fileID: 2107897118}
   componentCollider: {fileID: 2107897120}
   bodyPart: 3
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1 &2121136561 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5512032583367348973, guid: bb00ef0e5430e2d4a9f99376562f3081, type: 3}
@@ -2680,24 +2611,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc891094dc5b4664f85deed9fa82d743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  componentRigidbody: {fileID: 0}
-  componentCollider: {fileID: 0}
-  bodyPart: 0
---- !u!114 &2121136566
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2121136561}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc891094dc5b4664f85deed9fa82d743, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   componentRigidbody: {fileID: 2121136563}
   componentCollider: {fileID: 2121136564}
   bodyPart: 2
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!1001 &1134284448160254973
 PrefabInstance:
   m_ObjectHideFlags: 0

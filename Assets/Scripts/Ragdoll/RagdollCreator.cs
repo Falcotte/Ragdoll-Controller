@@ -306,6 +306,8 @@ namespace AngryKoala.Ragdoll
             RagdollComponent ragdollComponent = transform.gameObject.AddComponent<RagdollComponent>();
             ragdoll.RagdollComponents.Add(ragdollComponent);
 
+            ragdollComponent.SetLayerMask(LayerMask.GetMask("Default"));
+
             return ragdollComponent;
         }
 
