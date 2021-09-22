@@ -109,7 +109,6 @@ namespace AngryKoala.Ragdoll
                 }
                 return true;
             }
-
             return false;
         }
     }

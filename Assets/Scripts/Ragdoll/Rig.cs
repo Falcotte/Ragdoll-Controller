@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,6 +29,7 @@ namespace AngryKoala.Ragdoll
         public Transform MiddleSpine { get; private set; }
         public Transform Head { get; private set; }
 
+        // More rig types can be added here
         private enum RigTypes { Mixamo, AutoRig }
         private RigTypes rigtype;
 

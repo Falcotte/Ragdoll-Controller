@@ -12,6 +12,7 @@ public class Bomb : MonoBehaviour
     {
         foreach(var ragdoll in ragdolls)
         {
+            // Normally the object should have a reference to the animator component 
             ragdoll.GetComponent<Animator>().enabled = false;
 
             ragdoll.EnableRagdoll();
