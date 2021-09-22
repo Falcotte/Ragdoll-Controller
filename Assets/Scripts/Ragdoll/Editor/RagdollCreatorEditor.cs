@@ -81,14 +81,26 @@ namespace AngryKoala.Ragdoll
 
         private static bool CheckRig(Transform transform)
         {
-            if(!transform.GetComponentInChildren<SkinnedMeshRenderer>())
+            SkinnedMeshRenderer skinnedMeshRenderer = transform.GetComponentInChildren<SkinnedMeshRenderer>();
+            if(!skinnedMeshRenderer)
             {
                 return false;
             }
 
-            if(transform.GetComponentInChildren<SkinnedMeshRenderer>().rootBone.name == "mixamorig:Hips")
+            if(skinnedMeshRenderer.rootBone.name == "mixamorig:Hips")
             {
-                foreach(var part in Rig.MixamoRigPartNames)
+                foreach(var part in Rig.MixamoPartNames)
+                {
+                    if(!transform.FindRecursive(part))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else if(skinnedMeshRenderer.rootBone.name == "root.x")
+            {
+                foreach(var part in Rig.AutoRigPartNames)
                 {
                     if(!transform.FindRecursive(part))
                     {

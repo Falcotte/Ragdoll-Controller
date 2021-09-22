@@ -7,9 +7,12 @@ namespace AngryKoala.Ragdoll
 {
     public class Rig
     {
-        public static List<string> MixamoRigPartNames = new List<string> { "mixamorig:Hips", "mixamorig:LeftUpLeg", "mixamorig:LeftLeg",
-            "mixamorig:RightUpLeg","mixamorig:RightLeg","mixamorig:LeftArm","mixamorig:LeftForeArm","mixamorig:RightArm","mixamorig:RightForeArm",
-            "mixamorig:Spine1","mixamorig:Head" };
+        public static List<string> MixamoPartNames = new List<string> { "mixamorig:Hips", "mixamorig:LeftUpLeg", "mixamorig:LeftLeg",
+            "mixamorig:RightUpLeg", "mixamorig:RightLeg", "mixamorig:LeftArm", "mixamorig:LeftForeArm", "mixamorig:RightArm", "mixamorig:RightForeArm",
+            "mixamorig:Spine1", "mixamorig:Head" };
+
+        public static List<string> AutoRigPartNames = new List<string> { "root.x", "thigh_stretch.l", "leg_stretch.l", "thigh_stretch.r",
+            "leg_stretch.r", "arm_stretch.l", "forearm_stretch.l", "arm_stretch.r", "forearm_stretch.r", "spine_02.x", "head.x" };
 
         public Transform Pelvis { get; private set; }
 
@@ -28,7 +31,7 @@ namespace AngryKoala.Ragdoll
         public Transform MiddleSpine { get; private set; }
         public Transform Head { get; private set; }
 
-        private enum RigTypes { Mixamo }
+        private enum RigTypes { Mixamo, AutoRig }
         private RigTypes rigtype;
 
         public void DetermineRigType(Transform transform)
@@ -41,9 +44,13 @@ namespace AngryKoala.Ragdoll
                 return;
             }
 
-            if(transform.GetComponentInChildren<SkinnedMeshRenderer>().rootBone.name == "mixamorig:Hips")
+            if(skinnedMeshRenderer.rootBone.name == "mixamorig:Hips")
             {
                 rigtype = RigTypes.Mixamo;
+            }
+            else if(skinnedMeshRenderer.rootBone.name == "root.x")
+            {
+                rigtype = RigTypes.AutoRig;
             }
         }
 
@@ -53,6 +60,9 @@ namespace AngryKoala.Ragdoll
             {
                 case RigTypes.Mixamo:
                     GetMixamoParts(transform);
+                    break;
+                case RigTypes.AutoRig:
+                    GetAutoRigParts(transform);
                     break;
             }
         }
@@ -70,6 +80,21 @@ namespace AngryKoala.Ragdoll
             RightElbow = transform.FindRecursive("mixamorig:RightForeArm");
             MiddleSpine = transform.FindRecursive("mixamorig:Spine1");
             Head = transform.FindRecursive("mixamorig:Head");
+        }
+
+        private void GetAutoRigParts(Transform transform)
+        {
+            Pelvis = transform.FindRecursive("root.x");
+            LeftHips = transform.FindRecursive("thigh_stretch.l");
+            LeftKnee = transform.FindRecursive("leg_stretch.l");
+            RightHips = transform.FindRecursive("thigh_stretch.r");
+            RightKnee = transform.FindRecursive("leg_stretch.r");
+            LeftArm = transform.FindRecursive("arm_stretch.l");
+            LeftElbow = transform.FindRecursive("forearm_stretch.l");
+            RightArm = transform.FindRecursive("arm_stretch.r");
+            RightElbow = transform.FindRecursive("forearm_stretch.r");
+            MiddleSpine = transform.FindRecursive("spine_02.x");
+            Head = transform.FindRecursive("head.x");
         }
     }
 }
