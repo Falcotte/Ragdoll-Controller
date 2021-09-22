@@ -301,25 +301,27 @@ namespace AngryKoala.Ragdoll
             CalculateMassRecurse(rootBone);
         }
 
-        private void AddRagdollComponent(Transform transform)
+        private RagdollComponent AddRagdollComponent(Transform transform)
         {
             RagdollComponent ragdollComponent = transform.gameObject.AddComponent<RagdollComponent>();
             ragdoll.RagdollComponents.Add(ragdollComponent);
+
+            return ragdollComponent;
         }
 
         private void AddRagdollComponents()
         {
-            AddRagdollComponent(rig.Pelvis);
-            AddRagdollComponent(rig.LeftHips);
-            AddRagdollComponent(rig.LeftKnee);
-            AddRagdollComponent(rig.RightHips);
-            AddRagdollComponent(rig.RightKnee);
-            AddRagdollComponent(rig.LeftArm);
-            AddRagdollComponent(rig.LeftElbow);
-            AddRagdollComponent(rig.RightArm);
-            AddRagdollComponent(rig.RightElbow);
-            AddRagdollComponent(rig.MiddleSpine);
-            AddRagdollComponent(rig.Head);
+            AddRagdollComponent(rig.Pelvis).SetBodyPart(RagdollComponent.BodyParts.CenterMass);
+            AddRagdollComponent(rig.LeftHips).SetBodyPart(RagdollComponent.BodyParts.Leg);
+            AddRagdollComponent(rig.LeftKnee).SetBodyPart(RagdollComponent.BodyParts.Leg);
+            AddRagdollComponent(rig.RightHips).SetBodyPart(RagdollComponent.BodyParts.Leg);
+            AddRagdollComponent(rig.RightKnee).SetBodyPart(RagdollComponent.BodyParts.Leg);
+            AddRagdollComponent(rig.LeftArm).SetBodyPart(RagdollComponent.BodyParts.Arm);
+            AddRagdollComponent(rig.LeftElbow).SetBodyPart(RagdollComponent.BodyParts.Arm);
+            AddRagdollComponent(rig.RightArm).SetBodyPart(RagdollComponent.BodyParts.Arm);
+            AddRagdollComponent(rig.RightElbow).SetBodyPart(RagdollComponent.BodyParts.Arm);
+            AddRagdollComponent(rig.MiddleSpine).SetBodyPart(RagdollComponent.BodyParts.CenterMass);
+            AddRagdollComponent(rig.Head).SetBodyPart(RagdollComponent.BodyParts.Head);
         }
 
         #endregion
