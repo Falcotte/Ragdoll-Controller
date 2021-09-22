@@ -13,6 +13,8 @@ namespace AngryKoala.Ragdoll
             for(int i = 0; i < ragdollComponents.Count; i++)
             {
                 ragdollComponents[i].ComponentRigidbody.isKinematic = false;
+                ragdollComponents[i].ComponentRigidbody.velocity = ragdollComponents[i].ComponentRigidbody.angularVelocity = Vector3.zero;
+
                 ragdollComponents[i].ComponentCollider.enabled = true;
             }
         }
