@@ -7,7 +7,7 @@ namespace AngryKoala.Ragdoll
     [CustomEditor(typeof(RagdollCreator))]
     public class RagdollCreatorEditor : Editor
     {
-        [MenuItem("GameObject/Ragdoll/Add Ragdoll", false, 12)]
+        [MenuItem("GameObject/Angry Koala/Ragdoll/Add Ragdoll", false, 12)]
         private static void AddRagdoll()
         {
             foreach(var selected in Selection.gameObjects)
@@ -19,7 +19,7 @@ namespace AngryKoala.Ragdoll
             }
         }
 
-        [MenuItem("GameObject/Ragdoll/Add Ragdoll", true)]
+        [MenuItem("GameObject/Angry Koala/Ragdoll/Add Ragdoll", true)]
         private static bool AddRagdollValidation()
         {
             if(Selection.gameObjects.Length == 0)
@@ -37,7 +37,7 @@ namespace AngryKoala.Ragdoll
             return true;
         }
 
-        [MenuItem("GameObject/Ragdoll/Remove Ragdoll", false, 12)]
+        [MenuItem("GameObject/Angry Koala/Ragdoll/Remove Ragdoll", false, 12)]
         private static void RemoveRagdoll()
         {
             foreach(var selected in Selection.gameObjects)
@@ -61,7 +61,7 @@ namespace AngryKoala.Ragdoll
             }
         }
 
-        [MenuItem("GameObject/Ragdoll/Remove Ragdoll", true)]
+        [MenuItem("GameObject/Angry Koala/Ragdoll/Remove Ragdoll", true)]
         private static bool RemoveRagdollValidation()
         {
             if(Selection.gameObjects.Length == 0)
@@ -87,29 +87,28 @@ namespace AngryKoala.Ragdoll
                 return false;
             }
 
-            if(skinnedMeshRenderer.rootBone.name == "mixamorig:Hips")
+            int rigIndex = -1;
+
+            for(int i = 0; i < Rig.RigTypes.Length; i++)
             {
-                foreach(var part in Rig.MixamoPartNames)
+                if(skinnedMeshRenderer.rootBone.name == Rig.RigTypes[i].Pelvis)
                 {
-                    if(!transform.FindRecursive(part))
-                    {
-                        return false;
-                    }
+                    rigIndex = i;
+                    break;
                 }
-                return true;
             }
-            else if(skinnedMeshRenderer.rootBone.name == "root.x")
+
+            if(rigIndex == -1) return false;
+
+            foreach(var partName in Rig.RigTypes[rigIndex].PartNames)
             {
-                foreach(var part in Rig.AutoRigPartNames)
+                if(!transform.FindRecursive(partName))
                 {
-                    if(!transform.FindRecursive(part))
-                    {
-                        return false;
-                    }
+                    return false;
                 }
-                return true;
             }
-            return false;
+
+            return true;
         }
     }
 }
