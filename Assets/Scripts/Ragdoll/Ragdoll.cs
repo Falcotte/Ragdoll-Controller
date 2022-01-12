@@ -8,6 +8,9 @@ namespace AngryKoala.Ragdoll
         [SerializeField] private List<RagdollComponent> ragdollComponents = new List<RagdollComponent>();
         public List<RagdollComponent> RagdollComponents => ragdollComponents;
 
+        /// <summary>
+        /// Enables the ragdoll by its components
+        /// </summary>
         public void EnableRagdoll()
         {
             for(int i = 0; i < ragdollComponents.Count; i++)
@@ -19,6 +22,9 @@ namespace AngryKoala.Ragdoll
             }
         }
 
+        /// <summary>
+        /// Disables the ragdoll by its components
+        /// </summary>
         public void DisableRagdoll()
         {
             for(int i = 0; i < ragdollComponents.Count; i++)
@@ -28,7 +34,10 @@ namespace AngryKoala.Ragdoll
             }
         }
 
-        // Push ragdoll components with an identical force
+        /// <summary>
+        /// Push each ragdoll component individually with with an identical force
+        /// </summary>
+        /// <param name="force"></param>
         public void PushRagdoll(Vector3 force)
         {
             for(int i = 0; i < ragdollComponents.Count; i++)
@@ -37,22 +46,32 @@ namespace AngryKoala.Ragdoll
             }
         }
 
-        // Push entire ragdoll with a force that originates from originPosition (simplified version of PushRagdollComponents)
+        /// <summary>
+        /// Push each ragdoll component individually with a newly calculated force that originates from originPosition
+        /// </summary>
+        /// <param name="force"></param>
+        /// <param name="originPosition"></param>
         public void PushRagdoll(float force, Vector3 originPosition)
         {
-            Vector3 forceVector = (transform.position - originPosition).normalized * force;
             for(int i = 0; i < ragdollComponents.Count; i++)
             {
+                Vector3 forceVector = (ragdollComponents[i].transform.position - originPosition).normalized * force;
                 ragdollComponents[i].ComponentRigidbody.AddForce(forceVector, ForceMode.Impulse);
             }
         }
 
-        // Push ragdoll components with a force that originates from originPosition
-        public void PushRagdollComponents(float force, Vector3 originPosition)
+        /// <summary>
+        /// Push each ragdoll component individually with with an identical force that originates from originPosition (simplified version of PushRagdollComponents)
+        /// </summary>
+        /// <param name="force"></param>
+        /// <param name="originPosition"></param>
+        public void PushRagdollUniform(float force, Vector3 originPosition)
         {
+            Vector3 forceVector = (transform.position - originPosition).normalized * force;
+
             for(int i = 0; i < ragdollComponents.Count; i++)
             {
-                ragdollComponents[i].ComponentRigidbody.AddForce((ragdollComponents[i].transform.position - originPosition).normalized * force, ForceMode.Impulse);
+                ragdollComponents[i].ComponentRigidbody.AddForce(forceVector, ForceMode.Impulse);
             }
         }
     }

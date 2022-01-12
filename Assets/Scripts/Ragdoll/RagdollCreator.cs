@@ -1,26 +1,16 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace AngryKoala.Ragdoll
 {
     public class RagdollCreator : MonoBehaviour
     {
-        private float totalMass = 20;
-
         private Rig rig;
         private Ragdoll ragdoll;
 
-        private ArrayList bones;
-        private BoneInfo rootBone;
-
-        Vector3 right = Vector3.right;
-        Vector3 up = Vector3.up;
-        Vector3 forward = Vector3.forward;
-
-        Vector3 worldRight = Vector3.right;
-        Vector3 worldUp = Vector3.up;
-        Vector3 worldForward = Vector3.forward;
+        private List<RagdollPart> ragdollParts;
+        private RagdollPart rootPart;
 
         public void CreateRagdoll()
         {
@@ -31,166 +21,139 @@ namespace AngryKoala.Ragdoll
 
             ragdoll = gameObject.AddComponent<Ragdoll>();
 
-            PrepareBones();
-            CalculateAxes();
+            SetupRagdollParts();
 
-            Cleanup();
-
-            BuildCapsules();
-            AddBreastColliders();
-            AddHeadCollider();
-
-            BuildBodies();
-            BuildJoints();
-            CalculateMass();
+            AddColliders();
+            AddRigidbodies();
+            AddJoints();
 
             AddRagdollComponents();
         }
 
-        private void Cleanup()
-        {
-            if(bones == null)
-                return;
-
-            foreach(BoneInfo bone in bones)
-            {
-                if(!bone.anchor)
-                    continue;
-
-                Component[] joints = bone.anchor.GetComponentsInChildren(typeof(Joint));
-                foreach(Joint joint in joints)
-                {
-                    DestroyImmediate(joint);
-                }
-
-                Component[] bodies = bone.anchor.GetComponentsInChildren(typeof(Rigidbody));
-                foreach(Rigidbody body in bodies)
-                {
-                    DestroyImmediate(body);
-                }
-
-                Component[] colliders = bone.anchor.GetComponentsInChildren(typeof(Collider));
-                foreach(Collider collider in colliders)
-                {
-                    DestroyImmediate(collider);
-                }
-            }
-        }
-
         #region Ragdoll Creation
 
-        void PrepareBones()
+        private void SetupRagdollParts()
         {
-            if(rig.Pelvis)
-            {
-                worldRight = rig.Pelvis.TransformDirection(right);
-                worldUp = rig.Pelvis.TransformDirection(up);
-                worldForward = rig.Pelvis.TransformDirection(forward);
-            }
+            Quaternion originalRotation = transform.rotation;
+            transform.rotation = Quaternion.identity;
 
-            bones = new ArrayList();
+            ragdollParts = new List<RagdollPart>();
 
-            rootBone = new BoneInfo();
-            rootBone.name = "Pelvis";
-            rootBone.anchor = rig.Pelvis;
-            rootBone.parent = null;
-            rootBone.density = 2.5F;
-            bones.Add(rootBone);
+            rootPart = new RagdollPart();
+            rootPart.name = "Pelvis";
+            rootPart.anchor = rig.Pelvis;
+            rootPart.parent = null;
+            rootPart.density = 2.5F;
+            ragdollParts.Add(rootPart);
 
-            AddMirroredJoint("Hips", rig.LeftHips, rig.RightHips, "Pelvis", worldRight, worldForward, -20,
+            AddMirroredJoint("Hips", rig.LeftHips, rig.RightHips, "Pelvis", Vector3.right, Vector3.forward, -20,
                 70, 30,
                 typeof(CapsuleCollider), 0.3F, 1.5F);
-            AddMirroredJoint("Knee", rig.LeftKnee, rig.RightKnee, "Hips", worldRight, worldForward, -80, 0,
+            AddMirroredJoint("Knee", rig.LeftKnee, rig.RightKnee, "Hips", Vector3.right, Vector3.forward, -80, 0,
                 0,
                 typeof(CapsuleCollider), 0.25F, 1.5F);
 
-            AddJoint("Middle Spine", rig.MiddleSpine, "Pelvis", worldRight, worldForward, -20, 20, 10, null, 1,
+            AddJoint("Middle Spine", rig.MiddleSpine, "Pelvis", Vector3.right, Vector3.forward, -20, 20, 10, null, 1,
                 2.5F);
 
-            AddMirroredJoint("Arm", rig.LeftArm, rig.RightArm, "Middle Spine", worldUp, worldForward, -70,
+            AddMirroredJoint("Arm", rig.LeftArm, rig.RightArm, "Middle Spine", Vector3.up, Vector3.forward, -70,
                 10, 50,
                 typeof(CapsuleCollider), 0.25F, 1.0F);
-            AddMirroredJoint("Elbow", rig.LeftElbow, rig.RightElbow, "Arm", worldForward, worldUp, -90, 0,
+            AddMirroredJoint("Elbow", rig.LeftElbow, rig.RightElbow, "Arm", Vector3.forward, Vector3.up, -90, 0,
                 0,
                 typeof(CapsuleCollider), 0.20F, 1.0F);
 
-            AddJoint("Head", rig.Head, "Middle Spine", worldRight, worldForward, -40, 25, 25, null, 1, 1.0F);
-        }
+            AddJoint("Head", rig.Head, "Middle Spine", Vector3.right, Vector3.forward, -40, 25, 25, null, 1, 1.0F);
 
-        void CalculateAxes()
-        {
-            if(rig.Head != null && rig.Pelvis != null)
-                up = CalculateDirectionAxis(rig.Pelvis.InverseTransformPoint(rig.Head.position));
-            if(rig.RightElbow != null && rig.Pelvis != null)
+            transform.rotation = originalRotation;
+
+            if(ragdollParts != null)
             {
-                Vector3 removed, temp;
-                DecomposeVector(out temp, out removed,
-                    rig.Pelvis.InverseTransformPoint(rig.RightElbow.position), up);
-                right = CalculateDirectionAxis(removed);
-            }
-
-            forward = Vector3.Cross(right, up);
-        }
-
-        void BuildCapsules()
-        {
-            foreach(BoneInfo bone in bones)
-            {
-                if(bone.colliderType != typeof(CapsuleCollider))
-                    continue;
-
-                int direction;
-                float distance;
-                if(bone.children.Count == 1)
+                foreach(RagdollPart ragdollPart in ragdollParts)
                 {
-                    BoneInfo childBone = (BoneInfo)bone.children[0];
-                    Vector3 endPoint = childBone.anchor.position;
-                    CalculateDirection(bone.anchor.InverseTransformPoint(endPoint), out direction, out distance);
-                }
-                else
-                {
-                    Vector3 endPoint = (bone.anchor.position - bone.parent.anchor.position) + bone.anchor.position;
-                    CalculateDirection(bone.anchor.InverseTransformPoint(endPoint), out direction, out distance);
-
-                    if(bone.anchor.GetComponentsInChildren(typeof(Transform)).Length > 1)
+                    if(ragdollPart.anchor)
                     {
-                        Bounds bounds = new Bounds();
-                        foreach(Transform child in bone.anchor.GetComponentsInChildren(typeof(Transform)))
+                        Component[] joints = ragdollPart.anchor.GetComponentsInChildren(typeof(Joint));
+                        foreach(Joint joint in joints)
                         {
-                            bounds.Encapsulate(bone.anchor.InverseTransformPoint(child.position));
+                            DestroyImmediate(joint);
                         }
 
-                        if(distance > 0)
-                            distance = bounds.max[direction];
-                        else
-                            distance = bounds.min[direction];
+                        Component[] rigidbodies = ragdollPart.anchor.GetComponentsInChildren(typeof(Rigidbody));
+                        foreach(Rigidbody rigidbody in rigidbodies)
+                        {
+                            DestroyImmediate(rigidbody);
+                        }
+
+                        Component[] colliders = ragdollPart.anchor.GetComponentsInChildren(typeof(Collider));
+                        foreach(Collider collider in colliders)
+                        {
+                            DestroyImmediate(collider);
+                        }
                     }
                 }
-
-                CapsuleCollider collider = bone.anchor.gameObject.AddComponent<CapsuleCollider>();
-                collider.direction = direction;
-
-                Vector3 center = Vector3.zero;
-                center[direction] = distance * 0.5F;
-                collider.center = center;
-                collider.height = Mathf.Abs(distance);
-                collider.radius = Mathf.Abs(distance * bone.radiusScale);
             }
         }
 
-        void AddBreastColliders()
+        private void AddAppendageColliders()
+        {
+            foreach(RagdollPart ragdollPart in ragdollParts)
+            {
+                if(ragdollPart.colliderType == typeof(CapsuleCollider))
+                {
+                    int direction;
+                    float distance;
+                    if(ragdollPart.children.Count == 1)
+                    {
+                        RagdollPart childPart = (RagdollPart)ragdollPart.children[0];
+                        Vector3 endPoint = childPart.anchor.position;
+                        CalculateDirection(ragdollPart.anchor.InverseTransformPoint(endPoint), out direction, out distance);
+                    }
+                    else
+                    {
+                        Vector3 endPoint = (ragdollPart.anchor.position - ragdollPart.parent.anchor.position) + ragdollPart.anchor.position;
+                        CalculateDirection(ragdollPart.anchor.InverseTransformPoint(endPoint), out direction, out distance);
+
+                        if(ragdollPart.anchor.GetComponentsInChildren(typeof(Transform)).Length > 1)
+                        {
+                            Bounds bounds = new Bounds();
+                            foreach(Transform child in ragdollPart.anchor.GetComponentsInChildren(typeof(Transform)))
+                            {
+                                bounds.Encapsulate(ragdollPart.anchor.InverseTransformPoint(child.position));
+                            }
+
+                            if(distance > 0)
+                                distance = bounds.max[direction];
+                            else
+                                distance = bounds.min[direction];
+                        }
+                    }
+
+                    CapsuleCollider collider = ragdollPart.anchor.gameObject.AddComponent<CapsuleCollider>();
+                    collider.direction = direction;
+
+                    Vector3 center = Vector3.zero;
+                    center[direction] = distance * 0.5F;
+                    collider.center = center;
+                    collider.height = Mathf.Abs(distance);
+                    collider.radius = Mathf.Abs(distance * ragdollPart.radiusScale);
+                }
+            }
+        }
+
+        private void AddBodyColliders()
         {
             if(rig.MiddleSpine != null && rig.Pelvis != null)
             {
                 Bounds bounds;
                 BoxCollider box;
 
-                bounds = Clip(GetBreastBounds(rig.Pelvis), rig.Pelvis, rig.MiddleSpine, false);
+                bounds = Clip(GetBodyBounds(rig.Pelvis), rig.Pelvis, rig.MiddleSpine, false);
                 box = rig.Pelvis.gameObject.AddComponent<BoxCollider>();
                 box.center = bounds.center;
                 box.size = bounds.size;
 
-                bounds = Clip(GetBreastBounds(rig.MiddleSpine), rig.MiddleSpine, rig.MiddleSpine,
+                bounds = Clip(GetBodyBounds(rig.MiddleSpine), rig.MiddleSpine, rig.MiddleSpine,
                     true);
                 box = rig.MiddleSpine.gameObject.AddComponent<BoxCollider>();
                 box.center = bounds.center;
@@ -213,7 +176,7 @@ namespace AngryKoala.Ragdoll
             }
         }
 
-        void AddHeadCollider()
+        private void AddHeadCollider()
         {
             if(rig.Head.GetComponent<Collider>())
             {
@@ -245,60 +208,53 @@ namespace AngryKoala.Ragdoll
             sphere.center = center;
         }
 
-        void BuildBodies()
+        private void AddColliders()
         {
-            foreach(BoneInfo bone in bones)
+            AddAppendageColliders();
+            AddBodyColliders();
+            AddHeadCollider();
+        }
+
+        private void AddRigidbodies()
+        {
+            foreach(RagdollPart ragdollPart in ragdollParts)
             {
-                bone.anchor.gameObject.AddComponent<Rigidbody>();
-                bone.anchor.GetComponent<Rigidbody>().mass = bone.density;
+                ragdollPart.anchor.gameObject.AddComponent<Rigidbody>();
+                ragdollPart.anchor.GetComponent<Rigidbody>().mass = ragdollPart.density;
             }
         }
 
-        void BuildJoints()
+        private void AddJoints()
         {
-            foreach(BoneInfo bone in bones)
+            foreach(RagdollPart ragdollPart in ragdollParts)
             {
-                if(bone.parent == null)
+                if(ragdollPart.parent == null)
                     continue;
 
-                CharacterJoint joint = bone.anchor.gameObject.AddComponent<CharacterJoint>();
-                bone.joint = joint;
+                CharacterJoint joint = ragdollPart.anchor.gameObject.AddComponent<CharacterJoint>();
+                ragdollPart.joint = joint;
 
-                joint.axis = CalculateDirectionAxis(bone.anchor.InverseTransformDirection(bone.axis));
-                joint.swingAxis = CalculateDirectionAxis(bone.anchor.InverseTransformDirection(bone.normalAxis));
+                joint.axis = CalculateDirectionAxis(ragdollPart.anchor.InverseTransformDirection(ragdollPart.axis));
+                joint.swingAxis = CalculateDirectionAxis(ragdollPart.anchor.InverseTransformDirection(ragdollPart.normalAxis));
                 joint.anchor = Vector3.zero;
-                joint.connectedBody = bone.parent.anchor.GetComponent<Rigidbody>();
+                joint.connectedBody = ragdollPart.parent.anchor.GetComponent<Rigidbody>();
                 joint.enablePreprocessing = false;
 
                 SoftJointLimit limit = new SoftJointLimit();
                 limit.contactDistance = 0;
 
-                limit.limit = bone.minLimit;
+                limit.limit = ragdollPart.minLimit;
                 joint.lowTwistLimit = limit;
 
-                limit.limit = bone.maxLimit;
+                limit.limit = ragdollPart.maxLimit;
                 joint.highTwistLimit = limit;
 
-                limit.limit = bone.swingLimit;
+                limit.limit = ragdollPart.swingLimit;
                 joint.swing1Limit = limit;
 
                 limit.limit = 0;
                 joint.swing2Limit = limit;
             }
-        }
-
-        private void CalculateMass()
-        {
-            CalculateMassRecurse(rootBone);
-
-            float massScale = totalMass / rootBone.summedMass;
-
-            foreach(BoneInfo bone in bones)
-            {
-                bone.anchor.GetComponent<Rigidbody>().mass *= massScale;
-            }
-
-            CalculateMassRecurse(rootBone);
         }
 
         private RagdollComponent AddRagdollComponent(Transform transform)
@@ -330,13 +286,13 @@ namespace AngryKoala.Ragdoll
 
         #region Utility
 
-        private class BoneInfo
+        private class RagdollPart
         {
             public string name;
 
             public Transform anchor;
             public CharacterJoint joint;
-            public BoneInfo parent;
+            public RagdollPart parent;
 
             public float minLimit;
             public float maxLimit;
@@ -348,17 +304,17 @@ namespace AngryKoala.Ragdoll
             public float radiusScale;
             public Type colliderType;
 
-            public ArrayList children = new ArrayList();
+            public List<RagdollPart> children = new List<RagdollPart>();
             public float density;
-            public float summedMass; // The mass of this and all children bodies
+            public float summedMass;
         }
 
-        private BoneInfo FindBone(string name)
+        private RagdollPart FindRagdollPart(string name)
         {
-            foreach(BoneInfo bone in bones)
+            foreach(RagdollPart ragdollPart in ragdollParts)
             {
-                if(bone.name == name)
-                    return bone;
+                if(ragdollPart.name == name)
+                    return ragdollPart;
             }
             return null;
         }
@@ -366,27 +322,27 @@ namespace AngryKoala.Ragdoll
         private void AddJoint(string name, Transform anchor, string parent, Vector3 worldTwistAxis, Vector3 worldSwingAxis,
             float minLimit, float maxLimit, float swingLimit, Type colliderType, float radiusScale, float density)
         {
-            BoneInfo bone = new BoneInfo();
-            bone.name = name;
-            bone.anchor = anchor;
-            bone.axis = worldTwistAxis;
-            bone.normalAxis = worldSwingAxis;
-            bone.minLimit = minLimit;
-            bone.maxLimit = maxLimit;
-            bone.swingLimit = swingLimit;
-            bone.density = density;
-            bone.colliderType = colliderType;
-            bone.radiusScale = radiusScale;
+            RagdollPart ragdollPart = new RagdollPart();
+            ragdollPart.name = name;
+            ragdollPart.anchor = anchor;
+            ragdollPart.axis = worldTwistAxis;
+            ragdollPart.normalAxis = worldSwingAxis;
+            ragdollPart.minLimit = minLimit;
+            ragdollPart.maxLimit = maxLimit;
+            ragdollPart.swingLimit = swingLimit;
+            ragdollPart.density = density;
+            ragdollPart.colliderType = colliderType;
+            ragdollPart.radiusScale = radiusScale;
 
-            if(FindBone(parent) != null)
-                bone.parent = FindBone(parent);
+            if(FindRagdollPart(parent) != null)
+                ragdollPart.parent = FindRagdollPart(parent);
             else if(name.StartsWith("Left"))
-                bone.parent = FindBone("Left " + parent);
+                ragdollPart.parent = FindRagdollPart("Left " + parent);
             else if(name.StartsWith("Right"))
-                bone.parent = FindBone("Right " + parent);
+                ragdollPart.parent = FindRagdollPart("Right " + parent);
 
-            bone.parent.children.Add(bone);
-            bones.Add(bone);
+            ragdollPart.parent.children.Add(ragdollPart);
+            ragdollParts.Add(ragdollPart);
         }
 
         private void AddMirroredJoint(string name, Transform leftAnchor, Transform rightAnchor, string parent,
@@ -398,27 +354,6 @@ namespace AngryKoala.Ragdoll
             AddJoint("Right " + name, rightAnchor, parent, worldTwistAxis, worldSwingAxis, minLimit, maxLimit,
                 swingLimit,
                 colliderType, radiusScale, density);
-        }
-
-        private void DecomposeVector(out Vector3 normalCompo, out Vector3 tangentCompo, Vector3 outwardDir,
-            Vector3 outwardNormal)
-        {
-            outwardNormal = outwardNormal.normalized;
-            normalCompo = outwardNormal * Vector3.Dot(outwardDir, outwardNormal);
-            tangentCompo = outwardDir - normalCompo;
-        }
-
-        private void CalculateMassRecurse(BoneInfo bone)
-        {
-            float mass = bone.anchor.GetComponent<Rigidbody>().mass;
-
-            foreach(BoneInfo child in bone.children)
-            {
-                CalculateMassRecurse(child);
-                mass += child.summedMass;
-            }
-
-            bone.summedMass = mass;
         }
 
         private static void CalculateDirection(Vector3 point, out int direction, out float distance)
@@ -469,7 +404,7 @@ namespace AngryKoala.Ragdoll
             return bounds;
         }
 
-        private Bounds GetBreastBounds(Transform relativeTo)
+        private Bounds GetBodyBounds(Transform relativeTo)
         {
             Bounds bounds = new Bounds();
 
